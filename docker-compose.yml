@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  app:
+    image: palavrafest-api:latest
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    container_name: palavrafest-api
+    ports:
+      - ${PORT}:${PORT}
+    restart: always
+    env_file: .env
