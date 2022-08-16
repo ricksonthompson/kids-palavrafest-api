@@ -1,7 +1,12 @@
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
 export class Children {
   id: string
+  name: string
+  birhdate: string
+  father: string
+  mother: string
+  responsible: string
   createdAt: Date
   updatedAt?: Date
 

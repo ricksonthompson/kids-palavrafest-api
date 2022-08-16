@@ -9,9 +9,12 @@ generator client {
 }
 
 model Children {
-  id          String              @id @unique
-  name        String              @db.VarChar(255)
-  age         String
-  createdAt   DateTime            @default(now()) @db.Timestamp
-  updatedAt   DateTime?           @db.Timestamp
+  id              String              @id @unique
+  name            String              @db.VarChar(255)
+  birhdate        String              
+  father          String              @db.VarChar(255)
+  mother          String              @db.VarChar(255)
+  responsible     String              @db.VarChar(255)
+  createdAt       DateTime            @default(now()) @db.Timestamp
+  updatedAt       DateTime?           @db.Timestamp
 }

@@ -1,29 +1,53 @@
 import { Injectable } from "@nestjs/common";
+import { Children } from "src/entities/children.entity";
 import { Page, PageResponse } from "src/utils/page.model";
 import { Pageable } from "../../configs/database/pageable.service";
 import { PrismaService } from "../../configs/database/prisma.service";
 import IChildrenRepository from "./children.repository.contract";
 
 @Injectable()
-export class ChildrenRepository extends Pageable<any> implements IChildrenRepository {
+export class ChildrenRepository extends Pageable<Children> implements IChildrenRepository {
   constructor(
     private readonly repository: PrismaService
   ) {
     super()
   }
-  create(data: any): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async create(data: Children): Promise<Children> {
+    const { birhdate, father, id, mother, name, responsible } = data;
+
+    return await this.repository.children.create({
+      data: { id, birhdate, father, mother, name, responsible }
+    })
   }
-  findAll(page: Page): Promise<PageResponse<any>> {
-    throw new Error("Method not implemented.");
+
+  async findAll(page: Page): Promise<PageResponse<Children>> {
+    const items = await this.repository.children.findMany({
+      ...this.buildPage(page),
+    })
+
+    const total = await this.repository.children.count();
+
+    return this.buildPageResponse(items, total);
   }
-  delete(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  async delete(id: string): Promise<Children> {
+    return this.repository.children.delete({ where: { id }});
   }
-  findById(id: string): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  findById(id: string): Promise<Children> {
+    return this.repository.children.findUnique({ where: { id }});
   }
-  update(data: any): Promise<any> {
-    throw new Error("Method not implemented.");
+
+  update(data: Children): Promise<Children> {
+    return this.repository.children.update({
+      where: { 
+        id: data.id
+      },
+      data: {
+        ...data,
+        updatedAt: new Date()
+      }
+    })
   }
 }
